@@ -12,7 +12,6 @@ class ViewController: UIViewController {
     
     var current = ""
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -24,7 +23,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction func btnNumber(sender: UIButton) {
-        var num = sender.titleLabel!.text!
+        let num = sender.titleLabel!.text!
         current = current + "\(num)"
         if (resultArea.text != "0"){
             resultArea.text = resultArea.text! + num
@@ -41,7 +40,6 @@ class ViewController: UIViewController {
         } else {
             processRequest()
         }
-
     }
 
     @IBOutlet weak var resultArea: UILabel!
@@ -50,12 +48,13 @@ class ViewController: UIViewController {
         current = ""
         resultArea.text = "0"
     }
+    
     func processRequest() {
         let response = current
         var responses = response.componentsSeparatedByString(" ")
 
         if (!responses.contains("count") && !responses.contains("avg") && !responses.contains("fact") ) {
-            var first = Int(responses[0])
+            let first = Int(responses[0])
             let operation = responses[1]
             let second = Int(responses[2])
             var result = Int.init()
@@ -103,8 +102,6 @@ class ViewController: UIViewController {
             }
             resultArea.text = ("\(result)")
         }
-        
     }
-
 }
 
