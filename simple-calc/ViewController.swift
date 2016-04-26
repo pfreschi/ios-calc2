@@ -11,6 +11,8 @@ import UIKit
 class ViewController: UIViewController {
     
     var current = ""
+    var viewForHistory = ""
+    var history = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +40,11 @@ class ViewController: UIViewController {
         if (op != "=") {
             current = current + " \(op) "
         } else {
-            processRequest()
+            viewForHistory = "\(current) = "
+            viewForHistory = viewForHistory + processRequest()
+            history.append(viewForHistory)
+            viewForHistory = ""
+
         }
     }
 
@@ -49,7 +55,7 @@ class ViewController: UIViewController {
         resultArea.text = "0"
     }
     
-    func processRequest() {
+    func processRequest() -> String {
         let response = current
         var responses = response.componentsSeparatedByString(" ")
 
@@ -75,6 +81,7 @@ class ViewController: UIViewController {
             }
             resultArea.text = ("\(result)")
             current = String(result)
+            return String(result)
         } else if (responses.contains("count")){
             var count = 0
             for response in responses {
@@ -83,6 +90,7 @@ class ViewController: UIViewController {
                 }
             }
             resultArea.text = ("\(count)")
+            return ("\(count)")
         }  else if (responses.contains("avg")){
             var nums = [Int]()
             for response in responses {
@@ -92,6 +100,7 @@ class ViewController: UIViewController {
             }
             let avg = nums.reduce(0, combine: +)/nums.count
             resultArea.text = ("\(avg)")
+            return ("\(avg)")
 
         } else if (responses.contains("fact")){
             var number = Int(responses[0])
@@ -101,7 +110,18 @@ class ViewController: UIViewController {
                 number = number! - 1
             }
             resultArea.text = ("\(result)")
+            return ("\(result)")
+        } else {
+            return "error"
         }
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        if segue.identifier == "ShowHistoryController"{
+            let vc = segue.destinationViewController as! ViewControllerHistory
+            vc.history = self.history
+        }
+    }
+
 }
 
